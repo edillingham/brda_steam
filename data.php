@@ -7,6 +7,7 @@ class PlayerStats {
 class GameData {
 	public $id;
 	public $name;
+	public $numPlayers;
 }
 
 $dbh = new PDO('sqlite:stats.db');
@@ -45,7 +46,7 @@ function getAllPlayers($db) {
 
 function getAllGames($db) {
 	// TODO: allow order to be specified dynamically
-	$result = $db->query('SELECT * FROM game ORDER BY LOWER(name)');
+	$result = $db->query('SELECT g.*, c.numPlayers FROM game g INNER JOIN (SELECT game_id, COUNT(*) as numPlayers FROM stats GROUP BY game_id) c ON c.game_id = g.id ORDER BY LOWER(name)');
 	return $result->fetchAll(PDO::FETCH_CLASS, 'GameData');
 }
 
@@ -60,12 +61,12 @@ function getGame($db, $gameId) {
 }
 
 function getGamesByPlayer($db, $playerId) {
-	$result = $db->query('SELECT * FROM game WHERE id IN (SELECT game_id FROM stats WHERE user_id = "'.$playerId . '")');
+	$result = $db->query('SELECT * FROM game WHERE id IN (SELECT game_id FROM stats WHERE user_id = "'.$playerId . '") ORDER BY LOWER(name)');
 	return $result->fetchAll(PDO::FETCH_CLASS, 'GameData');
 }
 
 function getPlayersByGame($db, $gameId) {
-	$result = $db->query('SELECT * FROM player WHERE id IN (SELECT user_id FROM stats WHERE game_id = "'.$gameId . '")');
+	$result = $db->query('SELECT * FROM player WHERE id IN (SELECT user_id FROM stats WHERE game_id = "'.$gameId . '") ORDER BY LOWER(username)');
 	return $result->fetchAll(PDO::FETCH_CLASS, 'PlayerStats');
 }
 ?>

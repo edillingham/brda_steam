@@ -29,9 +29,13 @@
 	
 	<div class="panel col-md-6" ng-show="panel.isSelected('games')" style="border: 1px solid black; width:50%">
 		<input ng-model="query" type="text" placeholder="Filter by" autofocus>
+		Sort by: <select ng-model="gameSort">
+			<option value="game" selected="true">game name</option>
+			<option value="-numPlayers"># of players</option>
+		</select>
 		<ul>
-			<li ng-repeat="game in stats.games | filter:query" ng-class="{ active:stats.isCurrentGame(game.id) }">
-				<a href ng-click="stats.setGame(game)">{{ game.name }}</a>
+			<li ng-repeat="game in stats.games | filter:query | orderBy:gameSort" ng-class="{ active:stats.isCurrentGame(game.id) }">
+				<a href ng-click="stats.setGame(game)">{{ game.name }}</a> ({{ game.numPlayers }} players)
 			</li>
 		</ul>
 	</div>
@@ -52,7 +56,7 @@
 		<strong>Stats for {{ stats.currentGame.name }}:</strong><p/>
 		Players ({{ stats.currentGame.players.length }} total):
 		<ul>
-			<li ng-repeat="player in stats.currentGame.players | orderBy:player.username">
+			<li ng-repeat="player in stats.currentGame.players">
 				{{ player.username }}
 			</li>
 		</ul>
