@@ -33,24 +33,35 @@
 		this.setMember = function(obj) {
 			var self = this;
 			
+			this.currentGame = null;
 			this.currentMember = obj;
 			
 			$.ajax('data.php', {
 				async: false,
-				data: { op: 'getAllPlayers' },
+				data: { op: 'getGamesByPlayer', id: obj.id },
 				method: 'GET',
 				dataType: 'json',
 				success:function(result) {
 					self.currentMember.games = result; 
 				}
 			});
-			
-			this.currentGame = null;
 		};
 
 		this.setGame= function(obj) {
-			this.currentGame = obj;
+			var self = this;
+			
 			this.currentMember = null;
+			this.currentGame = obj;
+
+			$.ajax('data.php', {
+				async: false,
+				data: { op: 'getPlayersByGame', id: obj.id },
+				method: 'GET',
+				dataType: 'json',
+				success:function(result) {
+					self.currentGame.players = result; 
+				}
+			});
 		};
 
 		this.isCurrentMember = function(id) {

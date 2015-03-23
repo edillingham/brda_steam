@@ -24,6 +24,14 @@ switch($_GET['op']) {
 		echo json_encode(getAllGames($dbh));
 		break;
 		
+	case 'getGamesByPlayer':
+		echo json_encode(getGamesByPlayer($dbh, $_GET['id']));
+		break;
+		
+	case 'getPlayersByGame':
+		echo json_encode(getPlayersByGame($dbh, $_GET['id']));
+		break;
+		
 	default:
 		echo json_encode('error!');
 		break;
@@ -47,7 +55,17 @@ function getPlayer($db, $playerId) {
 }
 
 function getGame($db, $gameId) {
-	$result = $db->query('SELECT * FROM game WHERE id = '.gameId);
+	$result = $db->query('SELECT * FROM game WHERE id = '.$gameId);
 	return $result->fetchAll(PDO::FETCH_CLASS, 'GameData');
+}
+
+function getGamesByPlayer($db, $playerId) {
+	$result = $db->query('SELECT * FROM game WHERE id IN (SELECT game_id FROM stats WHERE user_id = "'.$playerId . '")');
+	return $result->fetchAll(PDO::FETCH_CLASS, 'GameData');
+}
+
+function getPlayersByGame($db, $gameId) {
+	$result = $db->query('SELECT * FROM player WHERE id IN (SELECT user_id FROM stats WHERE game_id = "'.$gameId . '")');
+	return $result->fetchAll(PDO::FETCH_CLASS, 'PlayerStats');
 }
 ?>

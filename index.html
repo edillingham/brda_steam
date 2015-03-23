@@ -18,7 +18,7 @@
 		</li>
 	</ul>
 
-	<div class="panel" ng-show="panel.isSelected('members')" style="border: 1px solid black; width:30%">
+	<div class="panel col-md-6" ng-show="panel.isSelected('members')" style="border: 1px solid black; width:50%">
 		<input ng-model="query" type="text" placeholder="Filter by" autofocus>
 		<ul>
 			<li ng-repeat="member in stats.members | filter:query" ng-class="{ active:stats.isCurrentMember(member.id) }">
@@ -27,7 +27,7 @@
 		</ul>
 	</div>
 	
-	<div class="panel" ng-show="panel.isSelected('games')" style="border: 1px solid black; width:50%">
+	<div class="panel col-md-6" ng-show="panel.isSelected('games')" style="border: 1px solid black; width:50%">
 		<input ng-model="query" type="text" placeholder="Filter by" autofocus>
 		<ul>
 			<li ng-repeat="game in stats.games | filter:query" ng-class="{ active:stats.isCurrentGame(game.id) }">
@@ -36,24 +36,24 @@
 		</ul>
 	</div>
 
-	<div class="panel" ng-show="panel.isSelected('members') && stats.currentMember">
+	<div class="panel col-md-6" ng-show="panel.isSelected('members') && stats.currentMember">
 		<strong>Stats for {{ stats.currentMember.username }}:</strong><br/>
 		{{ stats.currentMember.games.length }} game(s)<br/>
 		<ul>
 			<li ng-repeat="game in stats.currentMember.games">
-				{{ game.name }}<br/>
-				Play time: {{ game.playTime / 60 | number:2 }} hours<br/>
+				{{ game.name }}
+				<!-- <br/>Play time: {{ game.playTime / 60 | number:2 }} hours<br/>-->
 			</li>
 		</ul>
 		
 	</div>
 
-	<div class="panel" ng-show="panel.isSelected('games') && stats.currentGame">
+	<div class="panel col-md-6" ng-show="panel.isSelected('games') && stats.currentGame">
 		<strong>Stats for {{ stats.currentGame.name }}:</strong><p/>
-		Players:
+		Players ({{ stats.currentGame.players.length }} total):
 		<ul>
-			<li ng-repeat="player in stats.currentGame.players">
-				{{ player.name }}
+			<li ng-repeat="player in stats.currentGame.players | orderBy:player.username">
+				{{ player.username }}
 			</li>
 		</ul>
 	</div>
