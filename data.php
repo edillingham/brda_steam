@@ -11,7 +11,11 @@ switch($_GET['op']) {
 		echo json_encode(getPlayer($dbh, $_GET['id']));
 		break;
 		
-	default:
+	case 'getAllPlayers':
+		echo json_encode(getAllPlayers($dbh));
+		break;
+		
+		default:
 		echo json_encode('error!');
 		break;
 }
