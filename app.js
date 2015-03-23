@@ -2,7 +2,20 @@
 	var app = angular.module('brdaStats', []);
 	
 	app.controller('StatsController', function() {
-		this.members = users;
+		var self = this;
+		
+		this.members = {};
+
+		$.ajax('data.php', {
+			async: false,
+			data: { op: 'getAllPlayers' },
+			method: 'GET',
+			dataType: 'json',
+			success:function(result) {
+				self.members = result; 
+			}
+		});
+		
 		this.games = gameList;
 
 		this.currentGame = null;
