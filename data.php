@@ -14,23 +14,23 @@ $dbh = new PDO('sqlite:stats.db');
 
 switch($_GET['op']) {
 	case 'getPlayer':
-		echo json_encode(getPlayer($dbh, $_GET['id']));
+		echo json_encode(getPlayer($dbh, $_GET['id']), JSON_NUMERIC_CHECK);
 		break;
 		
 	case 'getAllPlayers':
-		echo json_encode(getAllPlayers($dbh));
+		echo json_encode(getAllPlayers($dbh), JSON_NUMERIC_CHECK);
 		break;
 		
 	case 'getAllGames':
-		echo json_encode(getAllGames($dbh));
+		echo json_encode(getAllGames($dbh), JSON_NUMERIC_CHECK);
 		break;
 		
 	case 'getGamesByPlayer':
-		echo json_encode(getGamesByPlayer($dbh, $_GET['id']));
+		echo json_encode(getGamesByPlayer($dbh, $_GET['id']), JSON_NUMERIC_CHECK);
 		break;
 		
 	case 'getPlayersByGame':
-		echo json_encode(getPlayersByGame($dbh, $_GET['id']));
+		echo json_encode(getPlayersByGame($dbh, $_GET['id']), JSON_NUMERIC_CHECK);
 		break;
 		
 	default:
