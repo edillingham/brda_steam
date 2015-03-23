@@ -11,24 +11,26 @@
 <section ng-controller="PanelController as panel" class="container">
 	<ul class="nav nav-pills">
 		<li ng-class="{ active:panel.isSelected('members') }">
-		 	<a href ng-click="panel.selectTab('members')">Members</a> 
+		 	<a href ng-click="panel.selectTab('members')">Members ({{ stats.members.length }})</a> 
 		 </li>
 		<li ng-class="{ active:panel.isSelected('games') }">
-			<a href ng-click="panel.selectTab('games')">Games</a>
+			<a href ng-click="panel.selectTab('games')">Games ({{ stats.games.length }})</a>
 		</li>
 	</ul>
 
-	<div class="panel" ng-show="panel.isSelected('members')" style="border: 1px solid black;">
+	<div class="panel" ng-show="panel.isSelected('members')" style="border: 1px solid black; width:30%">
+		<input ng-model="query" type="text" placeholder="Filter by" autofocus>
 		<ul>
-			<li ng-repeat="member in stats.members" ng-class="{ active:stats.isCurrentMember(member.id) }">
+			<li ng-repeat="member in stats.members | filter:query" ng-class="{ active:stats.isCurrentMember(member.id) }">
 				<a href ng-click="stats.setMember(member)">{{ member.username }}</a>
 			</li>
 		</ul>
 	</div>
 	
-	<div class="panel" ng-show="panel.isSelected('games')" style="border: 1px solid black;">
+	<div class="panel" ng-show="panel.isSelected('games')" style="border: 1px solid black; width:50%">
+		<input ng-model="query" type="text" placeholder="Filter by" autofocus>
 		<ul>
-			<li ng-repeat="game in stats.games">
+			<li ng-repeat="game in stats.games | filter:query" ng-class="{ active:stats.isCurrentGame(game.id) }">
 				<a href ng-click="stats.setGame(game)">{{ game.name }}</a>
 			</li>
 		</ul>
@@ -41,7 +43,6 @@
 			<li ng-repeat="game in stats.currentMember.games">
 				{{ game.name }}<br/>
 				Play time: {{ game.playTime / 60 | number:2 }} hours<br/>
-				Last played: {{ game.lastPlayed | date:'MM/dd/yyyy h:mm:ssa' }}
 			</li>
 		</ul>
 		

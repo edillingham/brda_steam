@@ -5,6 +5,10 @@
 		var self = this;
 		
 		this.members = {};
+		this.games = {};
+
+		this.currentGame = null;
+		this.currentMember = null;
 
 		$.ajax('data.php', {
 			async: false,
@@ -15,14 +19,32 @@
 				self.members = result; 
 			}
 		});
-		
-		this.games = gameList;
 
-		this.currentGame = null;
-		this.currentMember = null;
+		$.ajax('data.php', {
+			async: false,
+			data: { op: 'getAllGames' },
+			method: 'GET',
+			dataType: 'json',
+			success:function(result) {
+				self.games = result; 
+			}
+		});
 				
 		this.setMember = function(obj) {
+			var self = this;
+			
 			this.currentMember = obj;
+			
+			$.ajax('data.php', {
+				async: false,
+				data: { op: 'getAllPlayers' },
+				method: 'GET',
+				dataType: 'json',
+				success:function(result) {
+					self.currentMember.games = result; 
+				}
+			});
+			
 			this.currentGame = null;
 		};
 
@@ -33,6 +55,10 @@
 
 		this.isCurrentMember = function(id) {
 			return this.currentMember && this.currentMember.id === id;
+		}
+		
+		this.isCurrentGame= function(id) {
+			return this.currentGame && this.currentGame.id === id;
 		}
 		
 		this.resetCurrent = function() {
