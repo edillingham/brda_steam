@@ -1,0 +1,8 @@
+<?php
+
+	$config = [ 
+		"STEAM_PROVIDER_URL"	=> "http://steamcommunity.com/openid",  
+		"LOCAL_DOMAIN" 		=> "http://your-domain.com"		// Ex: http://bloodygonzo.dicklovers.org
+	]	
+
+?>
