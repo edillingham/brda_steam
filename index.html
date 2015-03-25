@@ -9,6 +9,7 @@
 <script type="text/javascript" src="app.js"></script>
 
 <section ng-controller="PanelController as panel" class="container">
+	<!--  navigation -->
 	<ul class="nav nav-pills">
 		<li ng-class="{ active:panel.isSelected('members') }">
 		 	<a href ng-click="panel.selectTab('members')">Members ({{ stats.members.length }})</a> 
@@ -18,6 +19,7 @@
 		</li>
 	</ul>
 
+	<!--  members list -->
 	<div class="panel col-md-6" ng-show="panel.isSelected('members')" style="border: 1px solid black; width:50%">
 		<input ng-model="query" type="text" placeholder="Filter by" autofocus>
 		<ul>
@@ -27,6 +29,7 @@
 		</ul>
 	</div>
 	
+	<!-- games list -->
 	<div class="panel col-md-6" ng-show="panel.isSelected('games')" style="border: 1px solid black; width:50%">
 		<input ng-model="query" type="text" placeholder="Filter by" autofocus>
 		Sort by: <select ng-model="gameSort">
@@ -40,18 +43,20 @@
 		</ul>
 	</div>
 
+	<!-- member detail -->
 	<div class="panel col-md-6" ng-show="panel.isSelected('members') && stats.currentMember">
 		<strong>Stats for {{ stats.currentMember.username }}:</strong><br/>
 		{{ stats.currentMember.games.length }} game(s)<br/>
 		<ul>
 			<li ng-repeat="game in stats.currentMember.games">
-				{{ game.name }}
+				{{ game.name }} ({{ game.numPlayers - 1}} other players)
 				<!-- <br/>Play time: {{ game.playTime / 60 | number:2 }} hours<br/>-->
 			</li>
 		</ul>
 		
 	</div>
 
+	<!-- game detail -->
 	<div class="panel col-md-6" ng-show="panel.isSelected('games') && stats.currentGame">
 		<strong>Stats for {{ stats.currentGame.name }}:</strong><p/>
 		Players ({{ stats.currentGame.players.length }} total):

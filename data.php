@@ -73,7 +73,7 @@ function getGame($db, $gameId) {
 }
 
 function getGamesByPlayer($db, $playerId) {
-	$result = $db->query('SELECT *, 0 as numPlayers FROM game WHERE id IN (SELECT game_id FROM stats WHERE user_id = "'.$playerId . '") ORDER BY LOWER(name)');
+	$result = $db->query('SELECT g.*, COUNT(*) as numPlayers FROM game g INNER JOIN stats s ON s.game_id = g.id WHERE g.id IN (SELECT game_id FROM stats WHERE user_id = "'.$playerId . '") GROUP BY g.id ORDER BY LOWER(name)');
 	return $result->fetchAll(PDO::FETCH_CLASS, 'GameData');
 }
 
