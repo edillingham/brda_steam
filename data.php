@@ -12,6 +12,8 @@ class GameData {
 
 $dbh = new PDO('sqlite:stats.db');
 
+header('Content-Type: application/json');
+
 switch($_GET['op']) {
 	case 'getPlayer':
 		echo json_encode(getPlayer($dbh, $_GET['id']));

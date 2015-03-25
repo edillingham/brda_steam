@@ -1,34 +1,17 @@
 (function() {
 	var app = angular.module('brdaStats', []);
 	
-	app.controller('StatsController', function() {
+	app.controller('StatsController', [ '$http', function($http) {
 		var self = this;
 		
-		this.members = {};
-		this.games = {};
+		this.members = [];
+		this.games = [];
 
 		this.currentGame = null;
 		this.currentMember = null;
 
-		$.ajax('data.php', {
-			async: false,
-			data: { op: 'getAllPlayers' },
-			method: 'GET',
-			dataType: 'json',
-			success:function(result) {
-				self.members = result; 
-			}
-		});
-
-		$.ajax('data.php', {
-			async: false,
-			data: { op: 'getAllGames' },
-			method: 'GET',
-			dataType: 'json',
-			success:function(result) {
-				self.games = result; 
-			}
-		});
+		$http.get('data.php', { params: { op: 'getAllPlayers' } }).success(function(result) { self.members = result; });
+		$http.get('data.php', { params: { op: 'getAllGames' } }).success(function(result) { self.games = result; });
 				
 		this.setMember = function(obj) {
 			var self = this;
@@ -36,15 +19,7 @@
 			this.currentGame = null;
 			this.currentMember = obj;
 			
-			$.ajax('data.php', {
-				async: false,
-				data: { op: 'getGamesByPlayer', id: obj.id },
-				method: 'GET',
-				dataType: 'json',
-				success:function(result) {
-					self.currentMember.games = result; 
-				}
-			});
+			$http.get('data.php', { params: { op: 'getGamesByPlayer', id: obj.id } }).success(function(result) { self.currentMember.games = result; });
 		};
 
 		this.setGame= function(obj) {
@@ -53,15 +28,7 @@
 			this.currentMember = null;
 			this.currentGame = obj;
 
-			$.ajax('data.php', {
-				async: false,
-				data: { op: 'getPlayersByGame', id: obj.id },
-				method: 'GET',
-				dataType: 'json',
-				success:function(result) {
-					self.currentGame.players = result; 
-				}
-			});
+			$http.get('data.php', { params: { op: 'getPlayersByGame', id: obj.id } }).success(function(result) { self.currentGame.players = result; });
 		};
 
 		this.isCurrentMember = function(id) {
@@ -76,7 +43,7 @@
 			this.currentGame = null;
 			this.currentMember = null;
 		};
-	});
+	}]);
 	
 	app.controller('PanelController', function() {
 		this.tab = 'members';				// replaces ng-init
@@ -88,42 +55,4 @@
 			return this.tab === checkTab;
 		};
 	});
-	
-	var users = [
-		{
-			id: 1,
-			name: 'weevhy',
-			games: [{ id: 70,  name: 'Half-Life',playTime: 100, lastPlayed: Date.now() }]
-		},{
-			id: 2,
-			name: 'bloodygonzo',
-			games: [
-			        { id: 70, name: 'Half-Life', playTime: 1000, lastPlayed: Date.now() },
-			        { id: 440, name: 'Team Fortress 2', playTime: 10, lastPlayed: Date.now() }
-			        ]
-		},{
-			id: 3,
-			name: 'Brobandy',
-			games: [{ id: 440,  name: 'Team Fortress 2', playTime: 10, lastPlayed: Date.now() }]
-		}
-	];
-
-	var gameList = [
-         {
-        	 id: 70,
-        	 name: 'Half-Life',
-        	 players: [
-    	           { id: 1, name: 'weevhy', playTime: 100, lastPlayed: Date.now() },
-    	           { id: 2, name: 'bloodygonzo', playTime: 1000, lastPlayed: Date.now() },
-    	           ]
-         },
-         {
-        	 id: 440,
-        	 name: 'Team Fortress 2',
-        	 players: [
-    	           { id: 2, name: 'bloodygonzo', playTime: 1000, lastPlayed: Date.now() },
-    	           { id: 3, name: 'Brobandy', playTime: 10, lastPlayed: Date.now() },
-    	           ]
-         }
-     ];
 })();
