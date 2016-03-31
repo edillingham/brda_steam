@@ -1,7 +1,11 @@
+<?php
+	require_once("_bootstrap.php");
+	require_once("auth/brda_steamauth.php");
+?>
 <!DOCTYPE html>
 <html ng-app="brdaStats">
 <head>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 </head>
 <body ng-controller="StatsController as stats">
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
@@ -17,8 +21,8 @@
 	<!--  navigation -->
 	<ul class="nav nav-pills">
 		<li ng-class="{ active:panel.isSelected('members') }">
-		 	<a href ng-click="panel.selectTab('members')">Members ({{ stats.members.length || 'loading...' }})</a> 
-		 </li>
+			<a href ng-click="panel.selectTab('members')">Members ({{ stats.members.length || 'loading...' }})</a>
+		</li>
 		<li ng-class="{ active:panel.isSelected('games') }">
 			<a href ng-click="panel.selectTab('games')">Games ({{ stats.games.length || 'loading...' }})</a>
 		</li>
@@ -33,7 +37,7 @@
 			</li>
 		</ul>
 	</div>
-	
+
 	<!-- games list -->
 	<div class="panel col-md-6" ng-show="panel.isSelected('games')" style="border: 1px solid black; width:50%">
 		<input ng-model="query" type="text" placeholder="Filter by" autofocus>
@@ -58,7 +62,7 @@
 				<!-- <br/>Play time: {{ game.playTime / 60 | number:2 }} hours<br/>-->
 			</li>
 		</ul>
-		
+
 	</div>
 
 	<!-- game detail -->
@@ -72,7 +76,7 @@
 		</ul>
 	</div>
 
-	</section>
+</section>
 
 </body>
 </html>
