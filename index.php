@@ -68,7 +68,7 @@
 	<!-- game detail -->
 	<div class="panel col-md-6" ng-show="panel.isSelected('games') && stats.currentGame">
 		<strong>Stats for {{ stats.currentGame.name }}:</strong><p/>
-		Players ({{ stats.currentGame.players.length }} total):
+		{{ stats.currentGame.players.length || 'loading' }} player(s)<br/>
 		<ul>
 			<li ng-repeat="player in stats.currentGame.players">
 				{{ player.username }}
